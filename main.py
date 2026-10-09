@@ -318,7 +318,10 @@ def generate(b: Gen, authorization: str = Header(None)):
     try:
         r = httpx.post(f"https://api.cloudflare.com/client/v4/accounts/{CF_ID}/ai/run/@cf/black-forest-labs/flux-1-schnell", timeout=90,
                        headers={"Authorization": f"Bearer {CF_TOKEN}"}, json={"prompt": p + ", digital art, no people, no text", "steps": 4})
-        img = r.json()["result"]["image"]
+        j = r.json()
+        if not j.get("success") or not (j.get("result") or {}).get("image"):
+            print("cloudflare said:", r.status_code, str(j)[:400])
+        img = j["result"]["image"]
     except Exception as e:
         print("image gen failed:", e); raise HTTPException(503, "Image service is busy. Try again soon.")
     ok = image_ok(img)
