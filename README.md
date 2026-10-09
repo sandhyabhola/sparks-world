@@ -78,20 +78,20 @@ Sign up (email code) ──► Answer story questions ──► Earn XP, unlock 
 | Layer | Technology |
 |---|---|
 | Backend | Python, **FastAPI**, Uvicorn |
-| Database | **SQLite** (single file, zero setup) |
+| Database | **Neon PostgreSQL** (serverless, free tier) via `psycopg` with a connection pool; generated images are stored in the database |
 | Frontend | HTML, CSS, vanilla JavaScript (no build step), SweetAlert2, Font Awesome |
 | Story and scoring AI | **Groq** (primary) with **Google Gemini** (fallback) |
 | Image generation | **Cloudflare Workers AI** (FLUX.1 schnell) |
 | Safety AI | LLM prompt moderation and Gemini vision image moderation |
-| Email | SMTP (Gmail by default, any provider supported) |
+| Email | **Brevo** transactional API (used on the hosted site), with SMTP as an optional fallback |
 | Bot protection | **Cloudflare Turnstile** |
 | Auth | Username/password, email OTP, optional Google Identity |
 
 ```
- Browser (HTML/JS) ──HTTPS──► FastAPI ──► SQLite
+ Browser (HTML/JS) ──HTTPS──► FastAPI ──► Neon PostgreSQL (accounts, content, images)
                                  ├──► Groq / Gemini        (stories, scoring, moderation)
                                  ├──► Cloudflare Workers AI (images)
-                                 ├──► SMTP                  (verification codes)
+                                 ├──► Brevo API             (verification codes)
                                  └──► Turnstile             (human check)
 ```
 
@@ -134,26 +134,26 @@ Security and child-safety were treated as core requirements, not afterthoughts.
 
 ### Web hardening
 - Security headers: `Content-Security-Policy`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy`.
-- Secrets live in `.env` and `.email_secret`, both git-ignored. Uploads and the database are also excluded from version control.
+- Secrets live in `.env` (or the host's environment settings) and are git-ignored. `EMAIL_SECRET` keys the email hashing and must never change.
 
 ---
 
 ## Getting Started
 
-**Requirements:** Python 3.10+
+**Requirements:** Python 3.10+ and a free [Neon](https://neon.tech) PostgreSQL database
 
 ```bash
 # 1. Install dependencies
 pip install -r requirements.txt
 
 # 2. Configure environment
-cp .env.example .env        # then fill in your keys (see Configuration)
+cp .env.example .env        # then fill in DATABASE_URL and your keys (see Configuration)
 
 # 3. Run
 python -m uvicorn main:app --reload
 ```
 
-Open **http://127.0.0.1:8000**. The database and the `uploads/` folder are created automatically on first run.
+Open **http://127.0.0.1:8000**. All database tables are created automatically on first run.
 
 > Features whose keys are not set degrade gracefully. For example, art generation reports that the image service is not set up yet.
 
@@ -165,16 +165,19 @@ Copy `.env.example` to `.env` and set:
 
 | Variable | Purpose |
 |---|---|
+| `DATABASE_URL` | Neon PostgreSQL connection string (ends with `?sslmode=require`). **Required** |
+| `EMAIL_SECRET` | Long random string that keys the email hashing. Set once, never change. Locally it is auto-created in `.email_secret` if unset |
 | `GROQ_API_KEY` | Primary LLM for stories and scoring |
 | `GEMINI_API_KEY` | Fallback LLM and image moderation |
 | `GROQ_MODEL`, `GEMINI_MODEL` | Model overrides (optional) |
 | `CF_ACCOUNT_ID`, `CF_API_TOKEN` | Cloudflare Workers AI for image generation |
-| `SMTP_EMAIL`, `SMTP_APP_PASSWORD` | Sender account for verification codes |
+| `BREVO_API_KEY`, `MAIL_FROM_EMAIL` | Sends verification codes via Brevo (sender must be verified in Brevo). Needed on Render, which blocks SMTP |
+| `SMTP_EMAIL`, `SMTP_APP_PASSWORD` | Optional Gmail fallback for local use |
 | `SMTP_HOST`, `SMTP_PORT` | Use a provider other than Gmail (optional) |
 | `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET` | Human verification (strongly recommended) |
 | `GOOGLE_CLIENT_ID` | Enables Google sign-in (optional) |
 
-⚠️ Never commit `.env` or `.email_secret`. Replacing `.email_secret` makes existing accounts' hashed emails stop matching, so back it up.
+⚠️ Never commit `.env` or `.email_secret`. Changing `EMAIL_SECRET` makes existing accounts' hashed emails stop matching, so back it up.
 
 ---
 
@@ -200,7 +203,8 @@ Sparks_out/
 ├── main.py            # FastAPI app: auth, game logic, AI integrations, moderation
 ├── requirements.txt
 ├── .env.example       # configuration template
-├── test_smtp.py       # email delivery check
+├── db_compat.py       # PostgreSQL layer: pooling, reconnects, SQL translation
+├── render.yaml        # Render deployment settings
 └── static/
     ├── login.html     # landing, signup, login, password reset
     ├── app.html       # main application (dashboard onwards)
@@ -216,7 +220,8 @@ Sparks_out/
 
 Listed openly because they are the first things to address before a large public launch.
 
-- **Single-node storage:** SQLite and local `uploads/` suit a prototype or small community but not horizontal scaling.
+- **Free-tier limits:** Neon's free plan has 1 GB of storage and pauses when idle (first request after a pause is slower), and Render's free plan sleeps after 15 idle minutes. Fine for a prototype or small community.
+- **Images in the database:** images are compressed (about 110 KB each) and stored in PostgreSQL. Moving them to object storage would be the next step at larger scale.
 - **In-memory rate limiting:** counters reset on restart and are not shared across multiple servers.
 - **Relaxed CSP:** the policy permits inline scripts (`unsafe-inline`) because the frontend uses inline code. Moving to nonces or external scripts would tighten it.
 - **Sessions in browser storage:** the token lives in `localStorage`. Moving to `HttpOnly` cookies would reduce XSS exposure.
@@ -273,12 +278,19 @@ Listed openly because they are the first things to address before a large public
 
 © Sparks World. All rights reserved. For demos, collaboration or licensing enquiries, please get in touch with the project owner.
 
+
 ---
 
 ## Deployment (free tier)
 
-- **Database:** Neon PostgreSQL (`DATABASE_URL`). Accounts, posts, votes and generated images (stored compressed in the database) all live there, so nothing is lost when the host restarts.
-- **Host:** Render free web service (`render.yaml`). Build `pip install -r requirements.txt`, start `uvicorn main:app --host 0.0.0.0 --port $PORT`. Put Render and Neon in the same region.
-- **Email codes:** Brevo API (`BREVO_API_KEY`, `MAIL_FROM_EMAIL`), because Render blocks SMTP.
-- **EMAIL_SECRET:** must be set and never changed, or existing accounts stop matching their emails.
-- See `.env.example` for every variable. Never commit `.env`.
+| Part | Service | Notes |
+|---|---|---|
+| Database | Neon PostgreSQL | Stores accounts, posts, votes and images, so nothing is lost on restarts |
+| Host | Render free web service | Settings in `render.yaml`; use the **same region as Neon** (for example Ohio for AWS US East 2) |
+| Email | Brevo API | Free 300 emails/day; verify a sender address first |
+
+1. Push the repository to GitHub (`.env`, `.email_secret` and virtual environments are git-ignored).
+2. On Render create a Web Service from the repo. Build: `pip install -r requirements.txt`. Start: `uvicorn main:app --host 0.0.0.0 --port $PORT`.
+3. Add the variables from `.env.example` under Environment (`DATABASE_URL`, `EMAIL_SECRET`, AI keys, Cloudflare, Turnstile, Brevo).
+4. Add the live URL to the Turnstile hostnames and, if used, Google's authorized origins.
+5. Replace `YOUR-APP-URL` in the link-preview tags with the live URL.
