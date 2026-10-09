@@ -1,0 +1,91 @@
+/* App pages (Dashboard onwards): old layout, restyled to the new Sparks World theme.
+   Base theme (stars, glass cards, cyber inputs, Orbitron buttons) comes from style.css */
+:root{--bg:#070514;--cy:#00f0ff;--pu:#a855f7;--or:#a855f7;--tx:#e2e8f0;--mu:#94a3b8}
+body.app{display:block;justify-content:flex-start;font-family:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box}
+.wrap{position:relative;z-index:10;max-width:1200px;margin:2rem auto;padding:0 1.5rem}
+h1,h2,h3{margin:.2rem 0}
+h3{font-family:'Orbitron',sans-serif}
+.cy{color:var(--cy);font-family:'Orbitron',sans-serif;text-shadow:0 0 10px rgba(0,240,255,.6);letter-spacing:1px}
+h1.cy{font-size:1.8rem;margin-bottom:1.2rem}
+.mu{color:var(--mu);font-size:.9rem}
+.card{padding:1.5rem;margin:1rem 0}
+
+/* header + nav + profile */
+header{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:.75rem 1.5rem;border-bottom:1px solid rgba(168,85,247,.2);background:rgba(7,5,20,.85);backdrop-filter:blur(12px)}
+nav{display:flex;gap:.25rem;flex-wrap:wrap;flex:1;justify-content:center}
+nav a{color:#94a3b8;font-family:'Orbitron',sans-serif;font-size:.85rem;padding:.5rem .75rem;border-radius:.5rem;transition:all .3s ease;text-decoration:none;white-space:nowrap}
+nav a.on,nav a:hover{color:#00f0ff;background:rgba(0,240,255,.1);text-shadow:0 0 10px rgba(0,240,255,.6)}
+#pf{position:relative}
+#pb{display:flex;align-items:center;gap:.5rem;cursor:pointer;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.3);padding:.4rem .8rem;border-radius:.75rem;color:var(--tx)}
+#who{color:#fff;font-size:.85rem}
+#lv{font-size:.7rem;color:#a855f7}
+#dd{display:none;position:absolute;right:0;top:110%;background:#070514;border:1px solid rgba(0,240,255,.3);border-radius:.75rem;box-shadow:0 0 20px rgba(0,240,255,.2);width:220px;z-index:50;overflow:hidden}
+#dd a{display:block;padding:.75rem 1rem;color:#cbd5e1;text-decoration:none;transition:background .2s;cursor:pointer}
+#dd a:hover{background:rgba(0,240,255,.15);color:#00f0ff}
+
+/* modal */
+.mb{position:fixed;inset:0;background:rgba(7,5,20,.8);backdrop-filter:blur(8px);display:grid;place-items:center;z-index:50;padding:1rem}
+.mc{max-width:500px;width:100%;max-height:90vh;overflow:auto;padding:2rem}
+
+/* buttons: outlined = normal, gradient (.or) = main action */
+.btn{display:block;width:100%;padding:.8rem;margin:.4rem 0;border-radius:.75rem;border:1px solid rgba(0,240,255,.5);background:rgba(0,240,255,.08);color:var(--cy);font-family:'Orbitron',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:1px;cursor:pointer;text-align:center;text-decoration:none;transition:all .3s ease}
+.btn:hover{background:rgba(0,240,255,.2);box-shadow:0 0 18px rgba(0,240,255,.5)}
+.btn.or{border:none;background:linear-gradient(90deg,#00f0ff,#a855f7);color:#070514}
+.btn.or:hover{box-shadow:0 0 22px rgba(0,240,255,.8);opacity:.95}
+.btn.off{opacity:.85;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#94a3b8;box-shadow:none}
+.btn.off:hover{background:rgba(255,255,255,.08);box-shadow:none}
+
+/* inputs (colours come from style.css) */
+input,select,textarea{width:100%;padding:.75rem;margin:.3rem 0;font-size:1rem;font-family:'Inter',sans-serif}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.tile{min-height:170px;display:flex;flex-direction:column;justify-content:flex-end}
+.icons span{font-size:1.5rem;cursor:pointer;margin:.2rem;padding:.4rem;background:rgba(255,255,255,.05);border-radius:.5rem;border:1px solid rgba(0,240,255,.2);display:inline-block}
+.icons{text-align:center;margin:1rem 0}
+.hint{font-size:.8rem;color:#fbbf24;margin:.1rem 0 .5rem}
+.chip{display:inline-block;padding:.2rem .75rem;border:1px solid var(--cy);background:rgba(0,240,255,.08);border-radius:99px;color:var(--cy);font-size:.75rem;font-family:'Orbitron',sans-serif}
+.row{display:flex;justify-content:space-between;padding:.6rem .8rem;border-radius:.6rem;background:rgba(13,10,30,.6);border:1px solid rgba(0,240,255,.2);margin:.4rem 0}
+#t{font-size:1.2rem;color:var(--cy);font-family:'Orbitron',sans-serif;font-weight:700}
+.tabs{display:flex;gap:.5rem}.tabs .btn{margin:0}
+
+/* level path (old dashboard design) */
+.lv{text-align:center;color:#fff}
+.lv .hex{font-size:3rem;filter:drop-shadow(0 0 14px var(--cy))}
+.lv.lock{opacity:.5}
+.lv.done .hex{filter:drop-shadow(0 0 14px #4ade80)}
+.node{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;font-size:1.8rem;color:var(--cy);border:2px solid var(--cy);background:rgba(0,240,255,.1);box-shadow:0 0 18px rgba(0,240,255,.4);margin:0 auto .3rem}
+.node.sel{border-color:#fff;box-shadow:0 0 30px var(--pu)}
+.lock .node{color:#64748b;border-color:#64748b;box-shadow:none}
+.done .node{color:#4ade80;border-color:#4ade80}
+.node{background:radial-gradient(circle at 35% 30%,hsl(var(--h,190) 100% 70% / .55),hsl(var(--h,190) 90% 40% / .15));border-color:hsl(var(--h,190) 100% 65%);color:hsl(var(--h,190) 100% 78%);box-shadow:0 0 22px hsl(var(--h,190) 100% 60% / .7),inset 0 0 18px hsl(var(--h,190) 100% 60% / .4);animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.07)}}
+.node.sel{border-color:#fff;box-shadow:0 0 30px var(--pu)}
+.pg{height:8px;background:rgba(255,255,255,.1);border-radius:9px;overflow:hidden;margin:.4rem 0}
+.pg i{display:block;height:100%;background:linear-gradient(90deg,#00f0ff,#a855f7)}
+table{width:100%;border-collapse:collapse}
+th{color:var(--cy);font-family:'Orbitron',sans-serif;font-size:.85rem}
+td,th{padding:.7rem;text-align:left;border-bottom:1px solid rgba(0,240,255,.15)}
+.back{display:inline-flex;gap:.5rem;align-items:center;margin:.2rem 0 1rem;padding:.45rem 1.1rem;border:1px solid var(--cy);border-radius:99px;color:var(--cy);background:rgba(0,240,255,.08);cursor:pointer;font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;box-shadow:0 0 14px rgba(0,240,255,.3);text-decoration:none;transition:all .3s}
+.back:hover{background:rgba(0,240,255,.2);transform:translateX(-3px)}
+
+/* like / comment switch */
+.sw{display:inline-flex;padding:3px;border-radius:99px;background:rgba(7,5,20,.9);border:1px solid rgba(0,240,255,.35);box-shadow:0 0 12px rgba(0,240,255,.2);margin:.5rem 0 .3rem}
+.sw button{border:0;background:none;color:var(--mu);padding:.25rem .8rem;border-radius:99px!important;cursor:pointer;font-size:1rem}
+.sw button.on{background:linear-gradient(90deg,#a855f7,#00f0ff);color:#070514;box-shadow:0 0 14px rgba(0,240,255,.6)}
+.pn{margin:.2rem 0}
+.mini{border:1px solid var(--cy);background:rgba(0,240,255,.08);color:var(--cy);border-radius:99px!important;padding:.3rem .9rem;cursor:pointer;font-weight:700;font-size:.8rem}
+.cl{max-height:84px;overflow:auto;font-size:.88rem;margin-bottom:.4rem}
+.cl div{padding:.25rem .4rem;border-bottom:1px solid rgba(0,240,255,.15)}
+.cr{display:flex;gap:.4rem}
+.cr input{margin:0;padding:.35rem .7rem;border-radius:99px!important}
+
+@media(max-width:800px){
+  .grid{grid-template-columns:1fr!important}
+  .wrap{margin:1rem auto;padding:0 1rem}
+  h1.cy{font-size:1.4rem}
+  header{padding:.6rem 1rem;flex-wrap:wrap;gap:.5rem}
+  #pf{order:2;margin-left:auto}
+  nav{order:3;flex:0 0 100%;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:.2rem}
+  nav::-webkit-scrollbar{display:none}
+  nav a{flex:0 0 auto}
+}

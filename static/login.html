@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparks World - Cyber-Fantasy Portal</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    <meta name="theme-color" content="#070514">
+    <meta name="description" content="Sparks World: a gamified creative-learning platform. Think, create and share.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sparks World">
+    <meta property="og:description" content="A gamified creative-learning platform. Think, create and share.">
+    <meta property="og:image" content="https://YOUR-APP-URL/static/og-image.png">
+    <meta property="og:url" content="https://YOUR-APP-URL/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .chk { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #cbd5e1; cursor: pointer; margin-bottom: 0.5rem; }
+        .chk input[type="checkbox"] { accent-color: #00f0ff; width: 1rem; height: 1rem; cursor: pointer; }
+        .sub { font-size: 0.8rem; color: rgba(0,240,255,0.8); margin: 0.5rem 0 1.5rem 0; }
+        .hint { font-size: 0.7rem; color: #94a3b8; margin-top: 0.25rem; margin-bottom: 0.75rem; }
+        .ctr { text-align: center; margin-top: 1.25rem; font-size: 0.85rem; color: #94a3b8; }
+        .row2 { display: flex; justify-content: space-between; font-size: 0.8rem; margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid rgba(0,240,255,0.2); }
+        .ic { display: inline-flex; padding: 0.75rem; border-radius: 1rem; background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.4); margin-bottom: 0.75rem; box-shadow: 0 0 20px rgba(168,85,247,0.3); font-size: 1.5rem; color: #a855f7; }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+
+    <header style="border-bottom: 1px solid rgba(168,85,247,0.2); background: rgba(7,5,20,0.8); backdrop-filter: blur(12px); padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 20;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 40px; height: 40px; border-radius: 0.75rem; background: linear-gradient(135deg, #a855f7, #00f0ff); padding: 1px; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 100%; height: 100%; background: #070514; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-meteor" style="color: #a855f7;"></i>
+                </div>
+            </div>
+            <div>
+                <h1 class="font-display" style="font-weight: 900; font-size: 1.1rem; letter-spacing: 2px; background: linear-gradient(90deg, #a855f7, #00f0ff); -webkit-background-clip: text; color: transparent; margin: 0;">SPARKS WORLD</h1>
+                <p class="font-display" style="font-size: 9px; letter-spacing: 3px; color: rgba(168,85,247,0.7); margin: 0;">CYBER-FANTASY REALM</p>
+            </div>
+        </div>
+    </header>
+
+    <main style="flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 1.5rem; position: relative; z-index: 10;">
+        <div class="glass-panel" style="width: 100%; max-width: 440px; padding: 2rem;">
+
+            <!-- 1. LOGIN VIEW -->
+            <div id="v_login">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div class="ic"><i class="fa-solid fa-key"></i></div>
+                    <h2 class="font-display" style="font-size: 1.4rem; color: #fff; text-shadow: 0 0 14px rgba(168,85,247,0.7); margin: 0;">WELCOME BACK</h2>
+                    <p style="font-size: 0.8rem; color: rgba(168,85,247,0.8); margin-top: 0.25rem;">Log in to shape your universe.</p>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; color: #a78bfa; margin-bottom: 0.35rem; text-transform: uppercase;">Username</label>
+                    <div style="position: relative; width: 100%;">
+                        <i class="fa-solid fa-user" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(168,85,247,0.6); pointer-events: none;"></i>
+                        <input id="lu" autocomplete="username" placeholder="NovaMind_07" class="cyber-input" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; color: #a78bfa; margin-bottom: 0.35rem; text-transform: uppercase;">Password</label>
+                    <div style="position: relative; width: 100%;" class="pw">
+                        <i class="fa-solid fa-lock" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(168,85,247,0.6); z-index: 5; pointer-events: none;"></i>
+                        <input id="lp" type="password" autocomplete="current-password" placeholder="••••••••••••" class="cyber-input" style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 2.5rem;">
+                        <i class="fa-solid fa-eye" onclick="eye('lp',this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: rgba(168,85,247,0.6); z-index: 5;"></i>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+                    <button class="lk" onclick="show('forgot1')">Forgot password?</button>
+                </div>
+
+                <button class="cyber-btn" id="bl" onclick="login()" style="width: 100%; padding: 0.85rem; border: none; background: linear-gradient(90deg, #a855f7, #00f0ff); color: #070514; box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);">LOG IN</button>
+
+                <div class="ctr">
+                    New here? <button class="lk" onclick="show('signup')">Create account</button>
+                </div>
+            </div>
+
+            <!-- 2. SIGNUP VIEW -->
+            <div id="v_signup" style="display:none;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div class="ic" style="color:#00f0ff;border-color:#00f0ff66;background:#00f0ff1a"><i class="fa-solid fa-user-astronaut"></i></div>
+                    <h2 class="font-display" style="font-size: 1.4rem; color: #fff; text-shadow: 0 0 14px rgba(0,240,255,0.7); margin: 0;">CREATE ACCOUNT</h2>
+                    <p style="font-size: 0.8rem; color: rgba(0,240,255,0.8); margin-top: 0.25rem;">Enter details to initiate your journey.</p>
+                </div>
+
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; color: #00f0ff; margin-bottom: 0.25rem; text-transform: uppercase;">User Name</label>
+                    
+                    <input id="su" placeholder="NovaMind_07" class="cyber-input" style="width: 100%; padding: 0.75rem 1rem;">
+                    <div class="hint">Pick a User name (4-16 characters, letters, numbers, underscore). It shows on leaderboards. Using your real name is your choice, but it will be public.</div>
+                </div>
+
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; color: #00f0ff; margin-bottom: 0.25rem; text-transform: uppercase;">Email</label>
+                    <input id="se" type="email" placeholder="you@gmail.com" class="cyber-input" style="width: 100%; padding: 0.75rem 1rem;">
+                </div>
+
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; color: #00f0ff; margin-bottom: 0.25rem; text-transform: uppercase;">Password</label>
+                    <div style="position: relative;" class="pw">
+                        <input id="sp" type="password" placeholder="••••••••••••" class="cyber-input" style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 1rem;" autocomplete="new-password">
+                        <i class="fa-solid fa-eye" onclick="eye('sp',this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: rgba(0,240,255,0.6);"></i>
+                    </div>
+                    <div class="hint">8+ characters with uppercase, lowercase, a number and a symbol. Use one you use nowhere else.</div>
+                </div>
+
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; color: #00f0ff; margin-bottom: 0.25rem; text-transform: uppercase;">Language</label>
+                    <select id="sl" class="cyber-input" style="width: 100%; padding: 0.75rem 1rem;">
+                        <option style="background:#070514;">English</option>
+                        <option style="background:#070514;">Hindi</option>
+                        <option style="background:#070514;">Telugu</option>
+                        <option style="background:#070514;">Tamil</option>
+                    </select>
+                </div>
+
+                <label class="chk"><input type="checkbox" id="c1"> I am 18 or older</label>
+                <label class="chk">
+                    <input type="checkbox" id="c2">
+                    <span>I accept the <a href="/terms" style="color:#00f0ff">terms and privacy policy</a></span>
+                </label>
+                <label class="chk"><input type="checkbox" id="c3"> I understand my answers may appear in anonymous public summaries</label>
+
+                <div id="cf1" style="margin:.6rem 0"></div>
+
+                <button class="cyber-btn" id="bs" onclick="signup()" style="width: 100%; padding: 0.85rem; border: none; background: linear-gradient(90deg, #00f0ff, #a855f7); color: #070514; box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);">SEND ME A CODE</button>
+
+                <div class="ctr">Already a member? <button class="lk" onclick="show('login')">Log in</button></div>
+            </div>
+
+            <!-- 3. OTP VERIFICATION VIEW -->
+            <div id="v_otp" style="display:none; text-align: center;">
+                <div class="ic" style="color:#00f0ff;border-color:#00f0ff66;background:#00f0ff1a"><i class="fa-solid fa-envelope-circle-check"></i></div>
+                <h2 class="font-display" style="font-size: 1.4rem; color: #fff; text-shadow: 0 0 14px rgba(0,240,255,0.7); margin: 0;">ENTER YOUR CODE</h2>
+                <div class="sub" id="otpsub"></div>
+                
+                <input id="code" inputmode="numeric" maxlength="6" placeholder="••••••" class="cyber-input" style="width: 100%; text-align: center; font-family: 'Orbitron', sans-serif; font-size: 1.5rem; letter-spacing: 0.4rem; margin-bottom: 1rem; padding: 0.75rem;">
+                
+                <button class="cyber-btn" id="bo" onclick="verify()" style="width: 100%; padding: 0.85rem; border: none; background: linear-gradient(90deg, #00f0ff, #a855f7); color: #070514;">VERIFY AND ENTER</button>
+
+                <div class="row2">
+                    <button class="lk" onclick="back()">← Change email</button>
+                    <button class="lk" id="rs" onclick="resend()">Resend code</button>
+                </div>
+            </div>
+
+            <!-- 4. FORGOT PASSWORD VIEW -->
+            <div id="v_forgot1" style="display:none;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div class="ic"><i class="fa-solid fa-lock"></i></div>
+                    <h2 class="font-display" style="font-size: 1.4rem; color: #fff; margin: 0;">RESET PASSWORD</h2>
+                    <div class="sub">Enter the email you signed up with. If it matches an account, we send a code.</div>
+                </div>
+                <label style="display: block; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; color: #00f0ff; margin-bottom: 0.25rem; text-transform: uppercase;">Email</label>
+                <input id="fe" type="email" placeholder="you@gmail.com" class="cyber-input" style="width: 100%; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+                <div id="cf2" style="margin:.6rem 0 1rem 0"></div>
+                <button class="cyber-btn" onclick="fsend()" style="width: 100%; padding: 0.85rem; border: none; background: linear-gradient(90deg, #00f0ff, #a855f7); color: #070514;">SEND CODE</button>
+                <div class="ctr"><button class="lk" onclick="show('login')">← Back to log in</button></div>
+            </div>
+
+            <!-- 5. FORGOT PASSWORD RESET VIEW -->
+            <div id="v_forgot2" style="display:none;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div class="ic" style="color:#00f0ff;border-color:#00f0ff66"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h2 class="font-display" style="font-size: 1.4rem; color: #fff; margin: 0;">NEW PASSWORD</h2>
+                    <div class="sub">Enter the code from your email and choose a new password.</div>
+                </div>
+                <input id="fc" inputmode="numeric" maxlength="6" placeholder="6-digit code" class="cyber-input" style="width: 100%; text-align: center; letter-spacing:.3rem; margin-bottom: 1rem; padding: 0.75rem;">
+                <div style="position: relative; margin-bottom: 0.25rem;" class="pw">
+                    <input id="fp" type="password" placeholder="New password" class="cyber-input" style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 1rem;" autocomplete="new-password">
+                    <i class="fa-solid fa-eye" onclick="eye('fp',this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: rgba(0,240,255,0.6);"></i>
+                </div>
+                <div class="hint">8+ characters with uppercase, lowercase, a number and a symbol.</div>
+                <button class="cyber-btn" onclick="freset()" style="width: 100%; padding: 0.85rem; border: none; background: linear-gradient(90deg, #00f0ff, #a855f7); color: #070514;">CHANGE PASSWORD</button>
+                <div class="ctr"><button class="lk" onclick="show('login')">← Back to log in</button></div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer style="border-top: 1px solid rgba(168,85,247,0.2); background: rgba(7,5,20,0.8); padding: 1rem; text-align: center; font-size: 0.75rem; color: #64748b; position: relative; z-index: 20;">
+        <p>&copy; 2026 SPARKS WORLD REALM. All temporal rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="/static/app.js"></script>
+    <script>
+        if(tok())location.href="/app";
+        let TS="",CT={};
+        api("config").then(c=>{TS=c.turnstile;if(!TS)return;const s=document.createElement("script");s.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+        s.onload=()=>{CT.a=turnstile.render("#cf1",{sitekey:TS,theme:"dark"});CT.b=turnstile.render("#cf2",{sitekey:TS,theme:"dark"})};document.head.appendChild(s)}).catch(()=>{});
+        const cap=k=>TS&&window.turnstile?turnstile.getResponse(CT[k]):"";const rc=k=>{if(TS&&window.turnstile)turnstile.reset(CT[k])};let EM="",cool=0;
+        const V=["login","signup","otp","forgot1","forgot2"];
+        const show=v=>V.forEach(x=>$("v_"+x).style.display=x==v?"block":"none");
+        if(localStorage.getItem("open_signup")==="true"){
+            localStorage.removeItem("open_signup");
+            show("signup");
+        }
+        const eye=(i,el)=>{const f=$(i);f.type=f.type=="password"?"text":"password";el.classList.toggle("fa-eye-slash")};
+        const J=o=>JSON.stringify(o);const err=m=>Swal.fire({...SW,icon:"error",text:m});
+
+        // keep signup details when the user visits Terms and comes back (password is never stored)
+        const SF=["su","se","sl","c1","c2","c3"];
+        const saveForm=()=>{const o={t:Date.now()};SF.forEach(i=>{const e=$(i);o[i]=e.type==="checkbox"?e.checked:e.value});localStorage.setItem("signup_form",JSON.stringify(o));sessionStorage.setItem("signup_pw",$("sp").value)};
+        SF.concat("sp").forEach(i=>{$(i).addEventListener("input",saveForm);$(i).addEventListener("change",saveForm)});
+        window.addEventListener("pagehide",saveForm);
+        try{const o=JSON.parse(localStorage.getItem("signup_form")||"{}");if(Date.now()-(o.t||0)<1800000)SF.forEach(i=>{if(!(i in o))return;const e=$(i);if(e.type==="checkbox")e.checked=o[i];else e.value=o[i]})}catch(e){}
+        $("sp").value=sessionStorage.getItem("signup_pw")||"";
+        async function login(){try{const d=await api("login",{method:"POST",body:J({username:$("lu").value.trim(),password:$("lp").value})});localStorage.setItem("ta_token",d.token);location.href="/app"}catch(e){err(e.message)}}
+        async function signup(){const u=$("su").value.trim(),p=$("sp").value;EM=$("se").value.trim();
+        if(!/^[A-Za-z][A-Za-z0-9_]{3,15}$/.test(u))return err("Gamer name: 4-16 characters, start with a letter, e.g. NovaMind_07");
+        if(!(p.length>=8&&/[a-z]/.test(p)&&/[A-Z]/.test(p)&&/\d/.test(p)&&/[^A-Za-z0-9]/.test(p)))return err("Password needs 8+ characters with upper, lower, number and symbol");
+        if(TS&&!cap("a"))return err("Please complete the human check first.");
+        $("bs").disabled=true;try{await api("signup/start",{method:"POST",body:J({username:u,password:p,email:EM,lang:$("sl").value,adult:$("c1").checked,terms:$("c2").checked,summary_ok:$("c3").checked,captcha:cap("a")})});
+        $("otpsub").textContent="We sent a 6-digit code to "+EM+". It expires in 10 minutes. Check your spam folder too.";show("otp");timer60()}catch(e){err(e.message)}rc("a");$("bs").disabled=false}
+        function timer60(){cool=60;$("rs").disabled=true;const t=setInterval(()=>{cool--;$("rs").textContent=cool>0?"Resend in "+cool+"s":"Resend code";if(cool<=0){clearInterval(t);$("rs").disabled=false}},1000)}
+        async function verify(){try{const d=await api("signup/verify",{method:"POST",body:J({email:EM,code:$("code").value})});localStorage.setItem("ta_token",d.token);localStorage.removeItem("signup_form");sessionStorage.removeItem("signup_pw");location.href="/app"}catch(e){err(e.message)}}
+        async function resend(){try{await api("signup/resend",{method:"POST",body:J({email:EM})});Swal.fire({...SW,icon:"success",text:"A new code is on its way.",timer:2200,showConfirmButton:false});timer60()}catch(e){err(e.message)}}
+        const back=()=>show("signup");
+        async function fsend(){EM=$("fe").value.trim();try{if(TS&&!cap("b"))return err("Please complete the human check first.");await api("forgot/start",{method:"POST",body:J({email:EM,captcha:cap("b")})});rc("b");await Swal.fire({...SW,icon:"info",text:"If that email has an account, a code is on its way."});show("forgot2")}catch(e){rc("b");err(e.message)}}
+        async function freset(){try{await api("forgot/verify",{method:"POST",body:J({email:EM,code:$("fc").value,password:$("fp").value})});await Swal.fire({...SW,icon:"success",text:"Password changed. Please log in."});show("login")}catch(e){err(e.message)}}
+    </script>
+</body>
+</html>

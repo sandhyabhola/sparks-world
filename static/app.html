@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sparks World</title>
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+<link rel="manifest" href="/static/site.webmanifest">
+<meta name="theme-color" content="#070514">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/app.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="app">
+<div class="stars"></div>
+<header>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <div style="width:40px;height:40px;border-radius:.75rem;background:linear-gradient(135deg,#a855f7,#00f0ff);padding:1px;display:flex;align-items:center;justify-content:center;">
+      <div style="width:100%;height:100%;background:#070514;border-radius:10px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-meteor" style="color:#a855f7;"></i></div>
+    </div>
+    <div>
+      <h1 class="font-display" style="font-weight:900;font-size:1.1rem;letter-spacing:2px;background:linear-gradient(90deg,#a855f7,#00f0ff);-webkit-background-clip:text;color:transparent;margin:0;">SPARKS WORLD</h1>
+      <p class="font-display" style="font-size:9px;letter-spacing:3px;color:rgba(168,85,247,.7);margin:0;">CYBER-FANTASY REALM</p>
+    </div>
+  </div>
+  <nav id="nav"></nav>
+  <div id="pf">
+    <div id="pb" onclick="dd()"><span id="ico" style="font-size:1.2rem">🚀</span><div><b id="who"></b><div class="mu" id="lv"></div></div><i class="fa-solid fa-chevron-down" style="font-size:.7rem;color:#00f0ff;margin-left:.25rem;"></i></div>
+    <div id="dd"><a onclick="go('badges')"><i class="fa-solid fa-medal" style="margin-right:8px;color:#00f0ff;"></i> Badge Details</a><a onclick="settings()"><i class="fa-solid fa-gear" style="margin-right:8px;color:#a855f7;"></i> Account Settings</a><a onclick="logout()"><i class="fa-solid fa-power-off" style="margin-right:8px;color:#ef4444;"></i> Logout</a></div>
+  </div>
+</header>
+<div class="wrap" id="main"></div><div id="modal"></div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script><script src="/static/app.js"></script><script>guard();
+let ME,TH="",CUR=0,Q=0,keys=0,voice=false,timer,rec,topic="";
+const NAV=[["dash","Dashboard"],["quests","Quests"],["arena","Brain Arena"],["gallery","Gallery"],["spot","Spotlight"],["tank","Mind Voices"],["board","Leaderboard"],["shop","Shop"]];
+$("nav").innerHTML=NAV.map(([k,t])=>`<a href="#/${k}" id="n_${k}">${t}</a>`).join("");
+const dd=()=>{const d=$("dd");d.style.display=d.style.display=="block"?"none":"block"};const go=k=>{$("dd").style.display="none";location.hash="#/"+k};
+const modal=h=>$("modal").innerHTML=`<div class="mb" onclick="if(event.target==this)closeM()"><div class="card mc">${h}</div></div>`;const closeM=()=>$("modal").innerHTML="";
+const LI=["lightbulb","gem","city","tree","dna","rocket","moon","fire","water","snowflake","bolt","wand-magic-sparkles"];const VL={English:"en-IN",Hindi:"hi-IN",Telugu:"te-IN",Tamil:"ta-IN",Spanish:"es-ES"};
+const BI={"New User":["star","#f39c12"],"First Quest":["compass","#e67e22"],"Forum Poster":["feather","#cbd5e1"],"High Scorer":["trophy","#facc15"],"Community Helper":["handshake","#f97316"],"Contributor":["gem","#38bdf8"],"Well Liked":["shield-halved","#c084fc"],"Lantern Lighter":["lightbulb","#fde047"],"Maze Maker":["cubes","#38bdf8"],"Citadel Architect":["city","#60a5fa"],"Grove Keeper":["tree","#4ade80"],"Abyss Explorer":["dna","#a78bfa"]};
+function dashHTML(){const L=window.LL,s=L[window.SEL-1],pv=L[window.SEL-2];
+return `<h1 class="cy" style="text-align:center">LEVEL PROGRESSION PATH</h1><div class="grid" style="grid-template-columns:1fr 1.2fr;align-items:center"><div>`+[...L].reverse().map((l,i)=>`<div class="lv ${l.open?"":"lock"} ${l.done?"done":""}" style="margin-left:${i%2?"30%":"0"};margin-bottom:1rem;cursor:pointer" onclick="pickL(${l.n})"><div class="node ${l.n==window.SEL?"sel":""}" style="--h:${(l.n*47)%360}"><i class="fa-solid fa-${l.open?LI[(l.n-1)%LI.length]:"lock"}"></i></div><b>LEVEL ${l.n}: ${esc(l.name)}</b>${l.done?" ✔":""}</div>`).join("")+`</div><div class="card"><h3 class="cy">LEVEL ${s.n}: ${esc(s.name)}</h3><p><b>Description:</b> ${esc(s.desc)}</p><p><b>Requirement:</b> ${pv?"Must have completed LEVEL "+pv.n+": "+esc(pv.name)+".":"None. Start here."}</p><p><b>Reward:</b> ${s.reward} XP, '${esc(s.badge)}' badge${L[window.SEL]?", unlock LEVEL "+(s.n+1):""}.</p>${s.open?`<a class="btn or" href="#/create:${s.n}">${s.done?"PLAY AGAIN":"PLAY NOW"}</a>`:'<div class="btn off">Locked: finish the previous level</div>'}</div></div>`}
+async function newTask(){try{const d=await api("level/"+window.LV+"/task?reroll=1");TH=d.task;$("tk").textContent=d.task}catch(e){alert(e.message)}}
+const pickL=n=>{window.SEL=n;$("main").innerHTML=dashHTML()};
+const TIER=p=>p>=1000?"Master Spark":p>=500?"Expert Spark":p>=200?"Advanced Spark":p>=50?"Intermediate Spark":"Rising Spark";
+async function me_(){ME=await api("me");if(!ME.consent)return location.href="/terms?accept=1";$("who").textContent="@"+ME.username;$("lv").textContent=`Level ${ME.level} • ${ME.xp} XP`;$("ico").textContent=ME.icon}
+let RT=0,HIST=[];const BACK='<a class="back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Back</a>';
+async function route(){const my=++RT;clearInterval(timer);if(rec)rec.stop();Q=0;const hh=location.hash||"#/dash";if(HIST[HIST.length-1]!==hh)HIST.push(hh);const[k,p]=hh.slice(2).split(":");
+document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.id=="n_"+k));if(!ME)await me_();else me_();if(my!==RT)return;
+let html;try{html=(k=="dash"||!V[k]?"":BACK)+await (V[k]||V.dash)(p)}catch(e){html=`<div class="card">${esc(e.message)}</div>`}if(my!==RT)return;$("main").innerHTML=html}
+const goBack=()=>{HIST.pop();location.hash=HIST.pop()||"#/dash"};
+window.onhashchange=route;
+const V={
+async dash(){window.LL=await api("levels");const f=LL.filter(l=>l.open&&!l.done)[0];window.SEL=f?f.n:LL.length;return dashHTML()},
+async quests(){const q=await api("quests"),t=q.themes,B=(a)=>a.map(x=>`<div class="row" style="display:block"><b>${x.name}</b><div class="mu">${x.desc} (${x.cur}/${x.max})</div><div class="pg"><i style="width:${100*x.cur/x.max}%"></i></div></div>`).join("");
+return `<h1 class="cy">CURRENT QUESTS</h1><div class="grid"><div class="card"><h3>☀ Daily</h3>${B(q.daily)}<p class="mu">Design quest: ${esc(t.daily)}</p><a class="btn" href="#/create:daily">DESIGN</a></div><div class="card"><h3>⏰ Weekly</h3>${B(q.weekly)}<p class="mu">Design quest: ${esc(t.weekly)}</p><a class="btn" href="#/create:weekly">DESIGN</a></div><div class="card"><h3>🌙 Monthly</h3>${B(q.monthly)}<p class="mu">Design quest: ${esc(t.monthly)}</p><a class="btn" href="#/create:monthly">DESIGN</a></div></div>`},
+async create(p){const lv=+p||0;let t,title;if(lv){const L=(await api("levels"))[lv-1];if(!L.open)return `<div class="card">🔒 Finish the previous level first.</div>`;const d=await api("level/"+lv+"/task");t=d.task;window.TL=d.locked;title=`Level ${lv}: ${L.name}`}else{t=(await api("challenges"))[p];title=p+" quest"}
+TH=t;CUR=0;window.LV=lv;window.QP=lv?"":p;return `<div class="card"><span class="chip">${esc(title)}</span><p id="tk">${esc(t)}</p>${lv&&!window.TL?'<button class="btn" onclick="newTask()">🔄 GIVE ME A DIFFERENT TASK</button>':""}<textarea id="p" rows="3" maxlength="300" placeholder="Your idea, any language. Fictional things only: no people, brands or sensitive symbols."></textarea><select id="vl">${Object.keys(VL).map(k=>`<option ${k==ME.lang?"selected":""}>${k}</option>`).join("")}</select><button class="btn" id="cmic" onclick="cmic()">🎤 Speak your idea</button><button class="btn" onclick="refine()">✨ REFINE MY IDEA (to English)</button><div id="rb" style="display:none"><div class="mu">Refined prompt (editable):</div><textarea id="rp" rows="3" maxlength="300"></textarea><button class="btn or" id="g" onclick="gen()">GENERATE</button></div><div id="err" class="hint" style="color:#ff6b81"></div></div><div class="card" id="out" style="display:none"><img id="im" style="width:100%;border-radius:12px"><button class="btn" onclick="post()">POST FOR REVIEW</button></div>`},
+async gallery(){const r=await api("art/mine");return `<h1 class="cy">MY GALLERY</h1><div class="grid">`+(r.map(a=>`<div class="card"><img src="/img/${esc(a.token)}" style="width:100%;border-radius:12px"><div class="mu">${a.level?"Level "+a.level+" · ":""}${a.challenge?a.challenge+" quest · ":""}❤ ${a.likes} · ${a.posted?"in Spotlight":"private"}</div>${a.posted?"":`<button class="btn" onclick="postOld(${a.id})">Post for review</button>`}<button class="btn off" onclick="del(${a.id})">Delete</button></div>`).join("")||'<div class="mu">No designs yet. Start from the Dashboard.</div>')+"</div>"},
+async spot(){const r=await api("gallery");return `<h1 class="cy">SPOTLIGHT <span class="mu">anonymous review</span></h1><div class="grid">`+(r.map(a=>`<div class="card"><img src="/img/${esc(a.token)}" style="width:100%;border-radius:12px"><div class="mu">${esc(a.prompt)}</div>${swHTML(a.id,a.likes,"art")}</div>`).join("")||'<div class="mu">Nothing to review yet.</div>')+"</div>"},
+async tank(){const r=await api("thinktank");return `<h1 class="cy">MIND VOICES</h1><p class="mu">Real-world questions with the community's top views. All anonymous.</p>`+(r.map(q=>`<div class="card"><span class="chip">${esc(q.topic)}</span><p>${esc(q.text)}</p><div class="grid">`+q.answers.map(a=>`<div class="row" style="display:block">💭 ${esc(a.t)}<div class="mu">Score ${a.score}/10</div>${swHTML(a.id,a.likes,"ans")}</div>`).join("")+"</div></div>").join("")||'<div class="card mu">No views yet. Play Brain Arena first.</div>')},
+async board(){const r=await api("minds");return `<h1 class="cy">GLOBAL USER RANKINGS</h1><div class="card"><table><tr><th>Rank</th><th>User</th><th>Answers</th><th>Points</th><th>Badge</th></tr>`+r.map((x,i)=>`<tr><td>${i+1}</td><td>${x.icon} @${esc(x.username)}</td><td>${x.answers}</td><td>${x.points}</td><td>${TIER(x.points)}</td></tr>`).join("")+"</table></div>"},
+async shop(){const I=[["🎟","Extra Design Pack","+10 designs"],["🖼","Neon Avatar Frame","Profile frame"],["🧊","Spark Energy Cube","Bonus power-up"],["🎨","Premium Profile Theme","New colours"]];return `<h1 class="cy">SPARKS SHOP</h1><p class="mu">Premium items are coming soon. Payments are not set up yet.</p><div class="grid">`+I.map(i=>`<div class="card"><div style="font-size:2.4rem">${i[0]}</div><h3>${i[1]}</h3><div class="mu">${i[2]}</div><div class="btn off">Coming soon</div></div>`).join("")+"</div>"},
+async badges(){const b=await api("badges");return `<h1 class="cy">BADGE DETAILS</h1><div class="grid">`+b.map(x=>{const[i,c]=BI[x.name]||["medal","#38bdf8"];return `<div class="card lv ${x.earned?"done":"lock"}"><div class="hex"><i class="fa-solid fa-${i}" style="color:${c};filter:drop-shadow(0 0 8px ${c})"></i></div><h3>${esc(x.name)}</h3><div class="mu">${esc(x.desc)}</div><div class="chip">${x.earned?"Earned":"Locked"}</div></div>`}).join("")+"</div>"},
+async arena(){const T=await api("topics");return `<div class="grid" style="grid-template-columns:1fr 2fr 1fr;align-items:start"><div class="card"><h3>CHOOSE CATEGORY</h3>`+T.map(t=>`<button class="btn ${t==topic?"or":""}" onclick="pick('${t}')">${esc(t)}</button>`).join("")+`</div><div class="card"><h3>QUESTION MASTER</h3><div id="qa" class="mu">Pick a category to get a story question.</div></div><div class="card"><h3>TOP MINDS</h3><div id="tm"></div></div></div>`+(setTimeout(minds,0),"")}};
+async function minds(){const r=await api("minds");if(!$("tm"))return;$("tm").innerHTML=r.slice(0,5).map((x,i)=>`<div class="row"><span>${["🥇","🥈","🥉"][i]||"#"+(i+1)} ${x.icon} @${esc(x.username)}<div class="mu">${x.answers} answers</div></span><b>${x.points}</b></div>`).join("")}
+async function pick(t){topic=t;route2()}const route2=()=>route().then(()=>newQ());
+async function newQ(){clearInterval(timer);const d=await api("scenario?topic="+encodeURIComponent(topic));Q=d.qid;keys=0;voice=false;let left=d.seconds;
+$("qa").innerHTML=`<span class="chip">${esc(topic)}</span><p style="line-height:1.6;color:var(--tx)">${esc(d.scenario)}</p><div id="t" style="color:var(--or);font-weight:700"></div><textarea id="a" rows="5" placeholder="Your answer in 1-3 sentences. Messy is fine!"></textarea><button class="btn" id="mic" onclick="mic()">🎤 Speak</button><button class="btn or" onclick="send(false)">SUBMIT ANSWER</button><div id="e2" class="hint" style="color:#ff6b81"></div>`;
+const a=$("a");a.addEventListener("paste",e=>e.preventDefault());a.addEventListener("drop",e=>e.preventDefault());a.addEventListener("keydown",()=>keys++);
+timer=setInterval(()=>{left--;$("t").textContent="⏱ "+left+"s";if(left<=0)send(true)},1000)}
+async function send(to){if(!Q)return;const id=Q,txt=$("a").value.trim();if(!to&&txt.length<15)return $("e2").textContent="Write at least one full sentence first.";
+clearInterval(timer);Q=0;if(rec)rec.stop();try{const d=await api("answer",{method:"POST",body:JSON.stringify({qid:id,text:txt,keystrokes:keys,voice:voice,timeout:to})});
+$("qa").innerHTML=`<h3>${d.score}/10 · +${d.xp} XP ${d.title?"· "+esc(d.title):""}</h3><p>${esc(d.feedback)}</p><button class="btn or" onclick="newQ()">NEXT QUESTION</button>`;await me_();minds()}catch(e){Q=id;$("e2").textContent=e.message}}
+function mic(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return alert("Voice works in Chrome or Edge.");if(rec)return rec.stop();
+const L={English:"en-IN",Hindi:"hi-IN",Telugu:"te-IN",Tamil:"ta-IN",Spanish:"es-ES"};rec=new SR();rec.lang=L[ME.lang]||"en-IN";rec.continuous=true;
+rec.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript+" ";$("a").value+=s;voice=true};rec.onend=()=>{rec=null;$("mic").textContent="🎤 Speak"};rec.start();$("mic").textContent="⏹ Stop"}
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&Q){const id=Q;Q=0;clearInterval(timer);api("answer",{method:"POST",body:JSON.stringify({qid:id,text:"",timeout:true})}).catch(()=>{});window.sw=1}else if(!document.hidden&&window.sw){window.sw=0;alert("You switched tabs, so that question ended. Here is a fresh one.");newQ()}});
+function cmic(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return alert("Voice works in Chrome or Edge.");if(rec)return rec.stop();
+rec=new SR();rec.lang=VL[$("vl").value]||"en-IN";rec.continuous=true;rec.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript+" ";$("p").value+=s};
+rec.onend=()=>{rec=null;$("cmic").textContent="🎤 Speak your idea"};rec.start();$("cmic").textContent="⏹ Stop"}
+const LK={};const base=k=>k=="art"?"art/":"forum/";
+const swHTML=(id,likes,kind)=>{LK[kind+id]=likes;return `<div class="sw" id="s${kind}${id}"><button class="on" onclick="swm('${kind}',${id},0)">👍</button><button onclick="swm('${kind}',${id},1)">💬</button></div><div id="p${kind}${id}" class="pn"><button class="mini" onclick="lk('${kind}',${id},this)">👍 Like · ${likes}</button></div>`};
+async function swm(k,id,m){const b=$("s"+k+id).children,p=$("p"+k+id);b[0].classList.toggle("on",m==0);b[1].classList.toggle("on",m==1);
+if(m==0)return p.innerHTML=`<button class="mini" onclick="lk('${k}',${id},this)">👍 Like · ${LK[k+id]}</button>`;
+const r=await api(base(k)+id+"/comments");p.innerHTML=`<div class="cl">${r.map(c=>`<div>${esc(c.text)}</div>`).join("")||'<span class="mu">No comments yet</span>'}</div><div class="cr"><input id="t${k}${id}" maxlength="200" placeholder="Say something kind"><button class="mini" onclick="sc2('${k}',${id})">Send</button></div>`}
+async function lk(k,id,b){try{const d=await api(base(k)+id+"/like",{method:"POST"});LK[k+id]=d.likes;b.textContent="👍 Like · "+d.likes}catch(e){alert(e.message)}}
+async function sc2(k,id){try{await api(base(k)+id+"/comments",{method:"POST",body:JSON.stringify({text:$("t"+k+id).value})});swm(k,id,1)}catch(e){alert(e.message)}}
+const IDEAS={"🌿 Nature":["a misty mountain valley at sunrise with a winding river and glowing mist","a quiet waterfall hidden in a green forest with floating fireflies","a calm lake under a huge moon with lotus flowers"],"🏰 Fantasy":["a fantasy world of lush nature with grand mansions floating in the sky joined by vine bridges","a glowing crystal forest with waterfalls falling into the clouds","a floating island garden with a lantern-lit palace"],"🍂 Seasons":["spring blossoms along a river at golden hour","a snowy pine forest in winter with warm lantern light","an autumn forest path covered in glowing red leaves"],"📱 Wallpapers":["a minimal aesthetic phone wallpaper with soft pastel mountains and a gradient sky","a dark neon galaxy wallpaper with swirling purple and cyan light"],"📚 Book covers":["romantic book cover art with two intertwined flowering vines and soft light, no people, no letters","mysterious book cover art with an old key, moths and moonlit fog, no people, no letters","a love story cover made of a heart-shaped glowing garden, no people, no letters"]};
+const ideaChips=()=>Object.entries(IDEAS).map(([c,l],i)=>`<div class="mu" style="margin-top:.5rem">${c}</div>`+l.map((t,j)=>`<span class="chip" style="cursor:pointer;margin:.15rem" onclick="useIdea(${i},${j})">${esc(t.split(" ").slice(0,5).join(" "))}…</span>`).join("")).join("");
+const useIdea=(i,j)=>{$("p").value=Object.values(IDEAS)[i][j]};
+async function refine(){$("err").textContent="";try{const d=await api("art/refine",{method:"POST",body:JSON.stringify({prompt:$("p").value,theme:TH})});$("rp").value=d.refined;$("rb").style.display="block"}catch(e){$("err").textContent=e.message}}
+async function gen(){$("err").textContent="";$("g").textContent="Creating...";try{const d=await api("art/generate",{method:"POST",body:JSON.stringify({prompt:$("rp").value})});CUR=d.id;$("im").src="/img/"+d.token;$("out").style.display="block"}
+catch(e){if(e.message=="QUOTA")quota();else $("err").textContent=e.message}$("g").textContent="GENERATE"}
+function quota(){const ok=ME.available>=100;modal(`<h3 class="cy">You've used today's 5 free designs</h3><p>Want to keep creating? Each extra design costs <b>100 XP</b>. Earn XP by answering questions in Brain Arena (up to 10 points each), or get more in the Shop.</p><div class="mu">Your available XP: ${ME.available}</div>`+(ok?'<button class="btn or" onclick="unlock()">Spend 100 XP for 1 more design</button>':'<button class="btn or" onclick="closeM();go(\'arena\')">Go to Brain Arena</button>')+'<button class="btn" onclick="closeM();go(\'shop\')">Visit the Shop</button>')}
+async function unlock(){try{await api("art/unlock",{method:"POST"});closeM();await me_();alert("Unlocked! Press Generate again.")}catch(e){alert(e.message)}}
+async function post(){try{const d=await api("art/"+CUR+"/post",{method:"POST",body:JSON.stringify({level:window.LV,challenge:window.QP})});alert(d.reward?"Posted! Level reward: +"+d.reward+" XP":"Posted for anonymous review!");$("out").style.display="none";await me_()}catch(e){alert(e.message)}}
+async function postOld(i){await api("art/"+i+"/post",{method:"POST",body:JSON.stringify({})});route()}
+async function del(i){if(await ask("Delete this design?")){await api("art/"+i,{method:"DELETE"});route()}}
+async function like(i,b){try{const d=await api("art/"+i+"/like",{method:"POST"});b.textContent="👍 "+d.likes}catch(e){alert(e.message)}}
+async function flike(i,b){try{const d=await api("forum/"+i+"/like",{method:"POST"});b.textContent="❤ "+d.likes}catch(e){alert(e.message)}}
+async function cm(i){const r=await api("art/"+i+"/comments");$("c"+i).innerHTML=r.map(c=>`<div class="row">${esc(c.text)}</div>`).join("")+`<input id="t${i}" maxlength="200" placeholder="Write an anonymous comment..."><button class="btn" onclick="sc(${i})">Send</button>`}
+async function sc(i){try{await api("art/"+i+"/comments",{method:"POST",body:JSON.stringify({text:$("t"+i).value})});cm(i)}catch(e){alert(e.message)}}
+function settings(){$("dd").style.display="none";modal(`<h3>Account Settings</h3><label class="mu">Username</label><input id="nu" value="${esc(ME.username)}"><button class="btn" onclick="sn()">Save username</button><label class="mu">Current password</label><input id="op" type="password"><label class="mu">New password</label><input id="np" type="password"><button class="btn" onclick="sp()">Change password</button><div class="icons">`+["🚀","👾","🪐","🦊","🐉","🤖","🌌","⚡"].map(c=>`<span onclick="si('${c}')">${c}</span>`).join("")+`</div><button class="btn off" style="border-color:#ff6b81;color:#ff6b81" onclick="delAccount()">Delete Account</button><button class="btn" onclick="closeM()">Close</button>`)}
+const ok=async(f,m)=>{try{await f();await me_();alert(m)}catch(e){alert(e.message)}};
+const sn=()=>ok(()=>api("account/username",{method:"POST",body:JSON.stringify({username:$("nu").value})}),"Username updated");
+const sp=()=>ok(()=>api("account/password",{method:"POST",body:JSON.stringify({old:$("op").value,new:$("np").value})}),"Password changed");
+const si=c=>ok(()=>api("icon",{method:"POST",body:JSON.stringify({icon:c})}),"Icon updated");
+route();
+</script></body></html>

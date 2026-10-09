@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+httpx
+python-dotenv
+psycopg[binary,pool]>=3.2
+Pillow

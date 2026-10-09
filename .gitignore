@@ -1,0 +1,8 @@
+.env
+.email_secret
+app5.db
+uploads/
+venv/
+sparks_venv/
+__pycache__/
+*.py[cod]
